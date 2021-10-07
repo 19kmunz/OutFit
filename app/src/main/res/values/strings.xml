@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">OutFit</string>
+    <string name="clothing_name">Clothing Name</string>
+    <string name="tops">Tops</string>
+    <string name="bottom">Bottom</string>
 </resources>

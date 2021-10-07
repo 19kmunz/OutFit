@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tops_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tops"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tops_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+    <TextView
+        android:id="@+id/bottoms_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bottoms_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+
+    <TextView
+        android:id="@+id/acc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accessories"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/acc_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+</LinearLayout>
