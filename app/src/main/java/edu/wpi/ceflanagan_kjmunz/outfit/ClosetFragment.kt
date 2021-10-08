@@ -1,6 +1,5 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -92,7 +91,7 @@ class ClosetFragment : Fragment() {
 
     private inner class ClothingAdapter(var clothes: List<Clothing>) : RecyclerView.Adapter<ClothingHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClothingHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_clothing, parent, false)
+            val view = layoutInflater.inflate(R.layout.list_item_clothing_delete, parent, false)
             return ClothingHolder(view)
         }
 
