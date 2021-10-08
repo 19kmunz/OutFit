@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="20dp">
         <ImageView
             android:id="@+id/image"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Sample Outfit Name"
+            android:text="Sample Clothing Name"
             tools:ignore="TouchTargetSizeCheck"
             android:minHeight="48dp" />
 
