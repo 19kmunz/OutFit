@@ -50,7 +50,7 @@ class NewClothingFragment : Fragment() {
             TypeSpinner.adapter = adapter
         }
 
-        TypeSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener() {
+        TypeSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parentView: AdapterView<*>?,
                 selectedItemView: View?,
