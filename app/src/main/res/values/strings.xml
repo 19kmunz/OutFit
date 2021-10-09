@@ -6,4 +6,9 @@
     <string name="accessories">Accessories</string>
     <string name="add_clothing">add clothing</string>
     <string name="save">Save</string>
+    <string-array name="types">
+        <item>Top</item>
+        <item>Bottom</item>
+        <item>Accessory</item>
+    </string-array>
 </resources>
