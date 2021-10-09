@@ -1,7 +1,14 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
-class Clothing(pName: String, pType: ClothingType) {
-    var name: String = pName;
-    var type: ClothingType = pType;
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.util.*
+
+@Entity
+data class Clothing(
+    @PrimaryKey
+    val id: UUID = UUID. randomUUID(),
+    var name: String = "default",
+    var type: ClothingType = ClothingType.NONE
     // ADD PHOTO
-}
+)
