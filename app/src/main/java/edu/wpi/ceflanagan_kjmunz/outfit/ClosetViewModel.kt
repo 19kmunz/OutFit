@@ -9,9 +9,9 @@ class ClosetViewModel : ViewModel() {
 
     init {
         for(i in 0 until 15){
-            tops += Clothing("Top #$i", ClothingType.TOP)
-            bottoms += Clothing("Bottom #$i", ClothingType.BOTTOM)
-            accs += Clothing("Accessory #$i", ClothingType.ACCESSORY)
+            tops += Clothing(i,"Top #$i", ClothingType.TOP)
+            bottoms += Clothing(i,"Bottom #$i", ClothingType.BOTTOM)
+            accs += Clothing(i,"Accessory #$i", ClothingType.ACCESSORY)
         }
     }
 }

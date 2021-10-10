@@ -4,6 +4,13 @@
     <string name="tops">Tops</string>
     <string name="bottom">Bottoms</string>
     <string name="accessories">Accessories</string>
-    <string name="add_clothing">add clothing</string>
+    <string name="add_clothing">Add clothing</string>
     <string name="save">Save</string>
+    <string name="outfits">My Outfits</string>
+    <string name="new_outfit">New Outfit</string>
+    <string name="sel_top">Select Top</string>
+    <string name="sel_bot">Select Bottom</string>
+    <string name="sel_acc">Select Accessories</string>
+    <string name="outfit_title">Outfit title</string>
+    <string name="clothing_names">Top, bottom, accessory</string>
 </resources>

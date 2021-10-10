@@ -1,7 +1,9 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
-class Clothing(pName: String, pType: ClothingType) {
+
+class Clothing(pID: Int, pName: String, pType: ClothingType) {
+    var id : Int = pID
     var name: String = pName;
     var type: ClothingType = pType;
-    // ADD PHOTO
+    //TODO ADD PHOTO
 }
