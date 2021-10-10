@@ -1,5 +1,6 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 
 private const val TAG = "NewOutfitFragment"
 
@@ -21,7 +23,9 @@ class NewOutfitFragment : Fragment() {
     private var topAdapter: ClothingAdapter? = ClothingAdapter(emptyList())
     private var bottomAdapter: ClothingAdapter? = ClothingAdapter(emptyList())
     private var accAdapter: ClothingAdapter? = ClothingAdapter(emptyList())
-
+    private var highlightedTops: LinkedList<View> = LinkedList<View>(emptyList())
+    private var highlightedBottoms: LinkedList<View> = LinkedList<View>(emptyList())
+    private var highlightedAccessories: LinkedList<View> = LinkedList<View>(emptyList())
     private val closetViewModel: ClosetViewModel by lazy {
         ViewModelProvider(this).get(ClosetViewModel::class.java)
     }
@@ -81,6 +85,36 @@ class NewOutfitFragment : Fragment() {
         override fun onClick(v: View) {
             Log.d(TAG, clothing.type.toString() + " " + clothing.name + " selected")
 
+            val trans = v.resources.getColor(R.color.white)
+            if (clothing.type.equals(ClothingType.TOP))
+            {
+                for (i in 0 until highlightedTops.size) {
+                    highlightedTops[i].setBackgroundColor(trans)
+                    Log.d(TAG, "Unhighlighted all tops")
+                }
+                highlightedTops.add(v)
+            }
+            else if (clothing.type.equals(ClothingType.BOTTOM))
+            {
+                for (i in 0 until highlightedBottoms.size) {
+                    highlightedBottoms[i].setBackgroundColor(trans)
+                    Log.d(TAG, "Unhighlighted all bottoms")
+                }
+                highlightedBottoms.add(v)
+            }
+            else if (clothing.type.equals(ClothingType.BOTTOM))
+            {
+                for (i in 0 until highlightedAccessories.size) {
+                    highlightedAccessories[i].setBackgroundColor(trans)
+                    Log.d(TAG, "Unhighlighted all accessories")
+                }
+                highlightedAccessories.add(v)
+            }
+
+            val color = v.resources.getColor(R.color.app_default)
+            v.setBackgroundColor(color)
+
+            //val rect = Rect(v.left, v.top, v.right, v.bottom)
         }
     }
 
