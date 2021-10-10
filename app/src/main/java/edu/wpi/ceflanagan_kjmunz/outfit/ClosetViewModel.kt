@@ -21,4 +21,8 @@ class ClosetViewModel : ViewModel() {
     val topsLiveData = clothingRepository.getTops()
     val bottomsLiveData = clothingRepository.getBottoms()
     val accsLiveData = clothingRepository.getAccessories()
+
+    fun deleteClothing(clothing: Clothing){
+        clothingRepository.deleteClothing(clothing)
+    }
 }

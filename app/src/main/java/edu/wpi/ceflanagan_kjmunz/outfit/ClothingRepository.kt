@@ -25,15 +25,21 @@ class ClothingRepository private constructor(context: Context) {
     fun getAccessories(): LiveData<List<Clothing>> = clothingDao.getClothesByType(ClothingType.ACCESSORY)
     fun getClothing(id: UUID): LiveData<Clothing?> = clothingDao.getClothing(id)
 
-    fun updateScore(clothing: Clothing) {
+    fun updateClothing(clothing: Clothing) {
         executor.execute {
             clothingDao.updateClothing(clothing)
         }
     }
 
-    fun addScore(clothing: Clothing) {
+    fun addClothing(clothing: Clothing) {
         executor.execute {
             clothingDao.addClothing(clothing)
+        }
+    }
+
+    fun deleteClothing(clothing: Clothing) {
+        executor.execute{
+            clothingDao.deleteClothing(clothing)
         }
     }
     companion object {

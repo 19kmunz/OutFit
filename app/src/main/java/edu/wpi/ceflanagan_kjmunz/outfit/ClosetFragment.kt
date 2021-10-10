@@ -145,7 +145,9 @@ class ClosetFragment : Fragment() {
             this.clothing = clothing
             nameTextView.text = clothing.name;
             Log.d(TAG, "Set to " + clothing.name)
-            // TODO: set delete on click listener
+            delete.setOnClickListener {
+                closetViewModel.deleteClothing(clothing)
+            }
             /* TODO: set image
             image.setImageResource(clothingImage.get())
             */

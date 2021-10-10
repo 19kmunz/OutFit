@@ -1,10 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import edu.wpi.ceflanagan_kjmunz.outfit.Clothing
 import edu.wpi.ceflanagan_kjmunz.outfit.ClothingType
 import java.util.*
@@ -26,4 +23,7 @@ interface ClothingDao {
 
     @Insert
     fun addClothing(clothing: Clothing)
+
+    @Delete
+    fun deleteClothing(clothing: Clothing)
 }

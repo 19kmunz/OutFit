@@ -20,10 +20,10 @@ class ClothingViewModel : ViewModel() {
     }
 
     fun addClothing(clothing: Clothing) {
-        clothingRepository.addScore(clothing)
+        clothingRepository.addClothing(clothing)
     }
 
     fun saveClothing(clothing: Clothing) {
-        clothingRepository.updateScore(clothing)
+        clothingRepository.updateClothing(clothing)
     }
 }
