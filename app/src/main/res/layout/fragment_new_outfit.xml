@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <TextView
         android:id="@+id/tops_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/tops"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:text="@string/sel_top"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tops_list"
@@ -24,9 +28,9 @@
         android:id="@+id/bottoms_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/bottom"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_below="@+id/tops_list"/>
+        android:layout_below="@+id/tops_list"
+        android:text="@string/sel_bot"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bottoms_list"
@@ -39,9 +43,9 @@
         android:id="@+id/acc_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/accessories"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:layout_below="@+id/bottoms_list" />
+        android:layout_below="@+id/bottoms_list"
+        android:text="@string/sel_acc"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/acc_list"
@@ -62,8 +66,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/add_clothing"
-        android:src="@android:drawable/ic_input_add" />
+        android:contentDescription="@string/save"
+        android:src="@android:drawable/ic_menu_save" />
 
 
 </RelativeLayout>
