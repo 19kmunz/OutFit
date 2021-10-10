@@ -1,5 +1,6 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,11 @@ import java.util.*
 private const val TAG = "NewClothingFragment"
 
 class NewClothingFragment : Fragment() {
+    interface Callbacks {
+        fun onExit()
+    }
+
+    private var callbacks: Callbacks? = null
 
     private var assumeInitInDb = false
 
@@ -25,11 +31,18 @@ class NewClothingFragment : Fragment() {
     private lateinit var NameEditText: EditText
     private lateinit var TypeSpinner: Spinner
     private lateinit var SaveButton: Button
+    private lateinit var ExitButton: Button
     // private lateinit var photoImageView: ImageView
     // private lateinit var cameraButton: ImageButton
 
     private val clothingViewModel: ClothingViewModel by lazy {
         ViewModelProvider(this).get(ClothingViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach() called")
+        super.onAttach(context)
+        callbacks = context as Callbacks?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +59,7 @@ class NewClothingFragment : Fragment() {
         NameEditText = view.findViewById(R.id.name_input) as EditText
         TypeSpinner = view.findViewById(R.id.type_input) as Spinner
         SaveButton = view.findViewById(R.id.save) as Button
+        ExitButton = view.findViewById(R.id.exit) as Button
         // Create an ArrayAdapter using the string array and a default spinner layout
 
         SaveButton.setOnClickListener { view: View ->
@@ -58,6 +72,10 @@ class NewClothingFragment : Fragment() {
                 clothingViewModel.loadClothing(clothing.id);
                 assumeInitInDb = true;
             }
+        }
+
+        ExitButton.setOnClickListener{
+            callbacks?.onExit()
         }
 
         ArrayAdapter.createFromResource(
@@ -113,5 +131,11 @@ class NewClothingFragment : Fragment() {
                 // blank
             }
         })
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
     }
 }

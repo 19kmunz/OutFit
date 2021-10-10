@@ -1,10 +1,12 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -12,10 +14,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.*
 
 private const val TAG = "ClosetFragment"
 
 class ClosetFragment : Fragment() {
+    interface Callbacks {
+        fun onNewClothingRequested()
+    }
+
+    private var callbacks: Callbacks? = null
+
+    private lateinit var plusButton: FloatingActionButton
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
     private lateinit var accsRecyclerView: RecyclerView
@@ -25,6 +36,12 @@ class ClosetFragment : Fragment() {
 
     private val closetViewModel: ClosetViewModel by lazy {
         ViewModelProvider(this).get(ClosetViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach() called")
+        super.onAttach(context)
+        callbacks = context as Callbacks?
     }
 
     companion object {
@@ -40,6 +57,8 @@ class ClosetFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_closet, container, false)
+        plusButton = view.findViewById(R.id.fab)
+
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
         topsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         topsRecyclerView.adapter = topAdapter
@@ -51,6 +70,10 @@ class ClosetFragment : Fragment() {
         accsRecyclerView = view.findViewById(R.id.acc_list) as RecyclerView
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
+
+        plusButton.setOnClickListener{
+            callbacks?.onNewClothingRequested()
+        }
         //updateUI()
         return view
     }
@@ -103,6 +126,11 @@ class ClosetFragment : Fragment() {
         accsRecyclerView.adapter = accAdapter
     }
 */
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
+    }
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: Clothing
@@ -123,7 +151,7 @@ class ClosetFragment : Fragment() {
             */
         }
         override fun onClick(v: View) {
-            //callbacks?.onScoreSelected(score.id) TODO: stretch go to edit view
+            //callbacks?.onScoreSelected(score.id) TODO: stretch goal to edit view
         }
     }
 
