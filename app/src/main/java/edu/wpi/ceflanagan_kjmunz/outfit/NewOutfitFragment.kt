@@ -1,5 +1,6 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,12 @@ import java.util.*
 private const val TAG = "NewOutfitFragment"
 
 class NewOutfitFragment : Fragment() {
+    interface Callbacks {
+        fun onNewOutfitRequested()
+    }
+
+    private var callbacks: ClosetFragment.Callbacks? = null
+
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
     private lateinit var accsRecyclerView: RecyclerView
@@ -30,9 +37,10 @@ class NewOutfitFragment : Fragment() {
         ViewModelProvider(this).get(ClosetViewModel::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total tops: ${closetViewModel.tops.size}")
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach() called")
+        super.onAttach(context)
+        callbacks = context as ClosetFragment.Callbacks?
     }
 
     companion object {
@@ -57,18 +65,56 @@ class NewOutfitFragment : Fragment() {
         bottomsRecyclerView.adapter = bottomAdapter
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
-        updateUI()
+//        updateUI()
         return view
     }
 
-    private fun updateUI() {
-        topAdapter = ClothingAdapter(closetViewModel.tops)
-        topsRecyclerView.adapter = topAdapter
-        bottomAdapter = ClothingAdapter(closetViewModel.bottoms)
-        bottomsRecyclerView.adapter = bottomAdapter
-        accAdapter = ClothingAdapter(closetViewModel.accs)
-        accsRecyclerView.adapter = accAdapter
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated() called")
+        super.onViewCreated(view, savedInstanceState)
+        closetViewModel.topsLiveData.observe(
+            viewLifecycleOwner,
+            { tops ->
+                tops?.let {
+                    Log.i(TAG, "Got tops ${tops.size}")
+                    // updateUITops
+                    topAdapter = ClothingAdapter(tops)
+                    topsRecyclerView.adapter = topAdapter
+                }
+                Log.d(TAG, "Tops Observer called")
+            })
+        closetViewModel.bottomsLiveData.observe(
+            viewLifecycleOwner,
+            { bottoms ->
+                bottoms?.let {
+                    Log.i(TAG, "Got bottoms ${bottoms.size}")
+                    // updateUIBottoms
+                    bottomAdapter = ClothingAdapter(bottoms)
+                    bottomsRecyclerView.adapter = bottomAdapter
+                }
+                Log.d(TAG, "Bottoms Observer called")
+            })
+        closetViewModel.accsLiveData.observe(
+            viewLifecycleOwner,
+            { accs ->
+                accs?.let {
+                    Log.i(TAG, "Got scores ${accs.size}")
+                    // updateUIAccs
+                    accAdapter = ClothingAdapter(accs)
+                    accsRecyclerView.adapter = accAdapter
+                }
+                Log.d(TAG, "Accs Observer called")
+            })
     }
+
+//    private fun updateUI() {
+//        topAdapter = ClothingAdapter(tops)
+//        topsRecyclerView.adapter = topAdapter
+//        bottomAdapter = ClothingAdapter(bottoms)
+//        bottomsRecyclerView.adapter = bottomAdapter
+//        accAdapter = ClothingAdapter(accs)
+//        accsRecyclerView.adapter = accAdapter
+//    }
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: Clothing

@@ -57,7 +57,7 @@ class ClosetFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_closet, container, false)
-        plusButton = view.findViewById(R.id.fab)
+        plusButton = view.findViewById(R.id.add_fit)
 
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
         topsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
