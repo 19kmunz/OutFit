@@ -19,10 +19,11 @@ private const val TAG = "NewOutfitFragment"
 
 class NewOutfitFragment : Fragment() {
     interface Callbacks {
-        fun onNewOutfitRequested()
+        fun onExit()
     }
 
-    private var callbacks: ClosetFragment.Callbacks? = null
+    private var callbacks: Callbacks? = null
+
 
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
@@ -33,6 +34,7 @@ class NewOutfitFragment : Fragment() {
     private var highlightedTops: LinkedList<View> = LinkedList<View>(emptyList())
     private var highlightedBottoms: LinkedList<View> = LinkedList<View>(emptyList())
     private var highlightedAccessories: LinkedList<View> = LinkedList<View>(emptyList())
+
     private val closetViewModel: ClosetViewModel by lazy {
         ViewModelProvider(this).get(ClosetViewModel::class.java)
     }
@@ -40,7 +42,7 @@ class NewOutfitFragment : Fragment() {
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach() called")
         super.onAttach(context)
-        callbacks = context as ClosetFragment.Callbacks?
+        callbacks = context as Callbacks?
     }
 
     companion object {
@@ -176,5 +178,11 @@ class NewOutfitFragment : Fragment() {
             val clothing = clothes[position]
             holder.bind(clothing)
         }
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
     }
 }

@@ -7,5 +7,6 @@ class ClothingApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         ClothingRepository.initialize(this)
+        OutfitRepository.initialize(this)
     }
 }
