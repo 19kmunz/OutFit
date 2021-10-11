@@ -1,6 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +11,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import getScaledAndRotatedBitmap
+import java.io.File
 import java.util.*
 
 private const val TAG = "ClosetFragment"
@@ -134,6 +138,8 @@ class ClosetFragment : Fragment() {
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: Clothing
+        private lateinit var photoFile: File
+        private lateinit var photoUri: Uri
         private val nameTextView: TextView = itemView.findViewById(R.id.name)
         private val image: ImageView = itemView.findViewById(R.id.image)
         private val delete: ImageView = itemView.findViewById(R.id.delete)
@@ -148,12 +154,21 @@ class ClosetFragment : Fragment() {
             delete.setOnClickListener {
                 closetViewModel.deleteClothing(clothing)
             }
-            /* TODO: set image
-            image.setImageResource(clothingImage.get())
-            */
+            updatePhotoView()
         }
         override fun onClick(v: View) {
             //callbacks?.onScoreSelected(score.id) TODO: stretch goal to edit view
+        }
+
+        private fun updatePhotoView() {
+            photoFile = closetViewModel.getPhotoFile(clothing)
+            photoUri = FileProvider.getUriForFile(requireActivity(), "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider", photoFile)
+            if (photoFile.exists()) {
+                val bitmap = getScaledAndRotatedBitmap(photoFile.path, requireActivity())
+                image.setImageBitmap(bitmap)
+            } else {
+                image.setImageDrawable(null)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import androidx.lifecycle.ViewModel
+import java.io.File
 import java.util.*
 
 class ClosetViewModel : ViewModel() {
@@ -24,5 +25,9 @@ class ClosetViewModel : ViewModel() {
 
     fun deleteClothing(clothing: Clothing){
         clothingRepository.deleteClothing(clothing)
+    }
+
+    fun getPhotoFile(clothing: Clothing): File {
+        return clothingRepository.getPhotoFile(clothing)
     }
 }
