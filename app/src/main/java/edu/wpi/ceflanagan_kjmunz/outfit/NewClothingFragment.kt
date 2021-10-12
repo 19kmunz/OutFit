@@ -29,9 +29,16 @@ private const val REQUEST_PHOTO = 1
 class NewClothingFragment : Fragment() {
     interface Callbacks {
         fun onExit()
+        fun onNavSearch()
+        fun onNavCloset()
+        fun onNavOutfits()
     }
 
     private var callbacks: Callbacks? = null
+
+    private lateinit var navCloset : ImageView
+    private lateinit var navSearch : ImageView
+    private lateinit var navOutfits : ImageView
 
     private var assumeInitInDb = false
 
@@ -67,6 +74,10 @@ class NewClothingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_new_clothing, container, false)
+        navCloset = view.findViewById(R.id.closet)
+        navOutfits = view.findViewById(R.id.outfits)
+        navSearch = view.findViewById(R.id.search)
+
         NameEditText = view.findViewById(R.id.name_input) as EditText
         TypeSpinner = view.findViewById(R.id.type_input) as Spinner
         SaveButton = view.findViewById(R.id.save) as Button
@@ -74,6 +85,16 @@ class NewClothingFragment : Fragment() {
         photoImageView = view.findViewById(R.id.image)
         cameraButton = view.findViewById(R.id.image_button)
         // Create an ArrayAdapter using the string array and a default spinner layout
+
+        navCloset.setOnClickListener {
+            callbacks?.onNavCloset()
+        }
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
+        navOutfits.setOnClickListener {
+            callbacks?.onNavOutfits()
+        }
 
         SaveButton.setOnClickListener { view: View ->
             if(assumeInitInDb) {
