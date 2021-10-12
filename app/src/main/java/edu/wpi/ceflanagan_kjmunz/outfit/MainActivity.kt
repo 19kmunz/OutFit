@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingF
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, NewOutfitFragment())
+                .replace(R.id.container, ClosetFragment())
                 .commitNow()
         }
     }
@@ -27,6 +27,33 @@ class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingF
 
     override fun onExit() {
         val fragment = ClosetFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onNavCloset() {
+        val fragment = ClosetFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onNavOutfits() {
+        val fragment = OutfitListFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onNavSearch() {
+        val fragment = SearchFragment()
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.container, fragment)

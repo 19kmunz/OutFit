@@ -1,6 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -26,9 +27,14 @@ private const val TAG = "ClosetFragment"
 class ClosetFragment : Fragment() {
     interface Callbacks {
         fun onNewClothingRequested()
+        fun onNavSearch()
+        fun onNavOutfits()
     }
 
     private var callbacks: Callbacks? = null
+
+    private lateinit var navSearch : ImageView
+    private lateinit var navOutfits : ImageView
 
     private lateinit var plusButton: FloatingActionButton
     private lateinit var topsRecyclerView: RecyclerView
@@ -61,6 +67,9 @@ class ClosetFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_closet, container, false)
+        navOutfits = view.findViewById(R.id.outfits)
+        navSearch = view.findViewById(R.id.search)
+
         plusButton = view.findViewById(R.id.add_fit)
 
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
@@ -75,6 +84,12 @@ class ClosetFragment : Fragment() {
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
 
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
+        navOutfits.setOnClickListener {
+            callbacks?.onNavOutfits()
+        }
         plusButton.setOnClickListener{
             callbacks?.onNewClothingRequested()
         }
