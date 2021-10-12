@@ -1,6 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -20,9 +21,16 @@ private const val TAG = "NewOutfitFragment"
 class NewOutfitFragment : Fragment() {
     interface Callbacks {
         fun onNewOutfitRequested()
+        fun onNavSearch()
+        fun onNavCloset()
+        fun onNavOutfits()
     }
 
-    private var callbacks: ClosetFragment.Callbacks? = null
+    private var callbacks: Callbacks? = null
+
+    private lateinit var navCloset : ImageView
+    private lateinit var navSearch : ImageView
+    private lateinit var navOutfits : ImageView
 
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
@@ -40,7 +48,7 @@ class NewOutfitFragment : Fragment() {
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach() called")
         super.onAttach(context)
-        callbacks = context as ClosetFragment.Callbacks?
+        callbacks = context as Callbacks?
     }
 
     companion object {
@@ -56,6 +64,10 @@ class NewOutfitFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_new_outfit, container, false)
+        navCloset = view.findViewById(R.id.closet)
+        navOutfits = view.findViewById(R.id.outfits)
+        navSearch = view.findViewById(R.id.search)
+
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
         bottomsRecyclerView = view.findViewById(R.id.bottoms_list) as RecyclerView
         accsRecyclerView = view.findViewById(R.id.acc_list) as RecyclerView
@@ -65,6 +77,16 @@ class NewOutfitFragment : Fragment() {
         bottomsRecyclerView.adapter = bottomAdapter
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
+
+        navCloset.setOnClickListener {
+            callbacks?.onNavCloset()
+        }
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
+        navOutfits.setOnClickListener {
+            callbacks?.onNavOutfits()
+        }
 //        updateUI()
         return view
     }
@@ -176,5 +198,11 @@ class NewOutfitFragment : Fragment() {
             val clothing = clothes[position]
             holder.bind(clothing)
         }
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
     }
 }

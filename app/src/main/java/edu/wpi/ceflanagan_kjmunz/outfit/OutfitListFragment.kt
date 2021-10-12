@@ -1,10 +1,13 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,12 +17,27 @@ import androidx.recyclerview.widget.RecyclerView
 private const val TAG = "OutfitListFragment"
 
 class OutfitListFragment : Fragment() {
+    interface Callbacks {
+        fun onNavSearch()
+        fun onNavCloset()
+    }
+
+    private var callbacks: Callbacks? = null
+
+    private lateinit var navCloset : ImageView
+    private lateinit var navSearch : ImageView
 
     private lateinit var outfitRecyclerView: RecyclerView
     private var adapter: OutfitAdapter? = null
 
     private val outfitListViewModel: OutfitListViewModel by lazy {
         ViewModelProvider(this).get(OutfitListViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach() called")
+        super.onAttach(context)
+        callbacks = context as Callbacks?
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +52,22 @@ class OutfitListFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_outfits_list, container, false)
+        navCloset = view.findViewById(R.id.closet)
+        navSearch = view.findViewById(R.id.search)
+
         outfitRecyclerView =
             view.findViewById(R.id.outfits_recycler_view) as RecyclerView
         outfitRecyclerView.layoutManager = LinearLayoutManager(context)
 
         updateUI()
         Log.d(TAG, "outfitRecyclerView attributes set")
+
+        navCloset.setOnClickListener {
+            callbacks?.onNavCloset()
+        }
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
 
         return view
     }
@@ -86,6 +114,12 @@ companion object {
         val outfits = outfitListViewModel.outfits
         adapter = OutfitAdapter(outfits)
         outfitRecyclerView.adapter = adapter
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
     }
 
 }
