@@ -19,4 +19,5 @@
     <string name="sel_acc">Select Accessories</string>
     <string name="outfit_title">Outfit title</string>
     <string name="clothing_names">Top, bottom, accessory</string>
+    <string name="search_with_keywords">Search with keywords...</string>
 </resources>

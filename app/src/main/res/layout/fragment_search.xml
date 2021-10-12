@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/after"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Im looking for: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_margin="10dp"/>
+
+    <Spinner
+        android:id="@+id/type_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_below="@id/after"/>
+
+    <ImageView
+        android:id="@+id/magnifying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_search_category_default"
+        android:layout_below="@id/type_input"/>
+
+    <EditText
+        android:id="@+id/name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="@string/search_with_keywords"
+        android:minHeight="48dp"
+        android:layout_below="@id/type_input"
+        android:layout_toRightOf="@id/magnifying"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/outfits_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_input"/>
+
+    <include android:id="@+id/layout_banner" layout="@layout/navigation_bar" />
+
+</RelativeLayout>
