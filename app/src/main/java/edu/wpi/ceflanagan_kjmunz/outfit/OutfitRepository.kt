@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import edu.wpi.ceflanagan_kjmunz.outfit.database.ClothingDatabase
 import edu.wpi.ceflanagan_kjmunz.outfit.database.OutfitDatabase
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -19,6 +20,8 @@ class OutfitRepository private constructor(context: Context) {
     private val outfitDao = database.outfitDao()
 
     private val executor = Executors.newSingleThreadExecutor()
+
+    private val filesDir = context.applicationContext.filesDir
 
     fun getOutfits(): LiveData<List<Outfit>> = outfitDao.getOutfits()
     fun getOutfit(id: UUID): LiveData<Outfit?> = outfitDao.getOutfit(id)
@@ -40,6 +43,12 @@ class OutfitRepository private constructor(context: Context) {
             outfitDao.deleteOutfit(outfit)
         }
     }
+
+    fun getTopPhotoFile(outfit: Outfit): File = File(filesDir, outfit.topPhotoFileName)
+    fun getBottomPhotoFile(outfit: Outfit): File = File(filesDir, outfit.bottomPhotoFileName)
+    fun getAccessoryPhotoFile(outfit: Outfit): File = File(filesDir, outfit.accessoryPhotoFileName)
+
+
     companion object {
         private var INSTANCE: OutfitRepository? = null
         fun initialize(context: Context) {
@@ -50,5 +59,6 @@ class OutfitRepository private constructor(context: Context) {
         fun get(): OutfitRepository {
             return INSTANCE ?:throw IllegalStateException("OutfitRepository must be initialized")
         }
+
     }
 }

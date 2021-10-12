@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import edu.wpi.ceflanagan_kjmunz.outfit.ui.main.MainFragment
 
-class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingFragment.Callbacks, OutfitListFragment.Callbacks, NewOutfitFragment.Callbacks, SearchFragment.Callbacks, {
+class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingFragment.Callbacks, OutfitListFragment.Callbacks, NewOutfitFragment.Callbacks, SearchFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

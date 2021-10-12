@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
+
 @Entity
 data class Outfit(
     @PrimaryKey
@@ -11,6 +12,8 @@ data class Outfit(
     var name: String = "default",
     var top: String?,
     var bottom: String?,
-    var accessory: String?
-    //TODO ADD IMAGES
+    var accessory: String?,
+    var topPhotoFileName: String?,
+    var bottomPhotoFileName: String?,
+    var accessoryPhotoFileName: String?
 )

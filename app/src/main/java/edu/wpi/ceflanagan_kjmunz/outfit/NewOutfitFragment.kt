@@ -3,6 +3,7 @@ package edu.wpi.ceflanagan_kjmunz.outfit
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,11 +14,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import getScaledAndRotatedBitmap
+import java.io.File
 import java.util.*
 
 private const val TAG = "NewOutfitFragment"
@@ -49,6 +53,9 @@ class NewOutfitFragment : Fragment() {
     private var setTop: String? = null
     private var setBottom: String? = null
     private var setAccessory: String? = null
+    private var photoTop: String? = null
+    private var photoBottom: String? = null
+    private var photoAccessory: String? = null
     private lateinit var outfitName: String
     private lateinit var outfit: Outfit
     private lateinit var saveOutfit: FloatingActionButton
@@ -78,7 +85,7 @@ class NewOutfitFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         outfitName = "Sample Outfit"
-        outfit = Outfit(UUID.randomUUID(), outfitName, setTop, setBottom, setAccessory)
+        outfit = Outfit(UUID.randomUUID(), outfitName, setTop, setBottom, setAccessory, photoTop, photoBottom, photoAccessory)
     }
 
     override fun onCreateView(
@@ -159,6 +166,9 @@ class NewOutfitFragment : Fragment() {
             outfit.top = setTop
             outfit.bottom = setBottom
             outfit.accessory = setAccessory
+            outfit.topPhotoFileName = photoTop
+            outfit.bottomPhotoFileName = photoBottom
+            outfit.accessoryPhotoFileName = photoAccessory
             Log.d(TAG, "Save Button clicked, inserting outfit into database")
             outfitViewModel.addOutfit(outfit)
             callbacks?.onNewOutfitSaved()
@@ -176,6 +186,9 @@ class NewOutfitFragment : Fragment() {
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: Clothing
+        private lateinit var photoFile: File
+        private lateinit var photoUri: Uri
+        private val image: ImageView = itemView.findViewById(R.id.image)
         private val nameTextView: TextView = itemView. findViewById(R.id.name)
 
         init {
@@ -185,7 +198,20 @@ class NewOutfitFragment : Fragment() {
             this.clothing = clothing
             nameTextView.text = clothing.name;
             Log.d(TAG, "NameTextView set to " + clothing.name)
+            updatePhotoView()
+
         }
+
+            private fun updatePhotoView() {
+                photoFile = closetViewModel.getPhotoFile(clothing)
+                photoUri = FileProvider.getUriForFile(requireActivity(), "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider", photoFile)
+                if (photoFile.exists()) {
+                    val bitmap = getScaledAndRotatedBitmap(photoFile.path, requireActivity())
+                    image.setImageBitmap(bitmap)
+                } else {
+                    image.setImageDrawable(null)
+                }
+            }
 
         override fun onClick(v: View) {
             Log.d(TAG, clothing.type.toString() + " " + clothing.name + " selected")
@@ -199,6 +225,7 @@ class NewOutfitFragment : Fragment() {
                 }
                 highlightedTops.add(v)
                 setTop = clothing.name
+                photoTop = clothing.photoFileName
             }
             else if (clothing.type.equals(ClothingType.BOTTOM))
             {
@@ -208,6 +235,7 @@ class NewOutfitFragment : Fragment() {
                 }
                 highlightedBottoms.add(v)
                 setBottom = clothing.name
+                photoBottom = clothing.photoFileName
             }
             else if (clothing.type.equals(ClothingType.ACCESSORY))
             {
@@ -217,6 +245,7 @@ class NewOutfitFragment : Fragment() {
                 }
                 highlightedAccessories.add(v)
                 setAccessory = clothing.name
+                photoAccessory = clothing.photoFileName
             }
 
             val color = v.resources.getColor(R.color.app_default)
