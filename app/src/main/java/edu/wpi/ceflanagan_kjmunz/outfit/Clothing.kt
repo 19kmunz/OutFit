@@ -11,4 +11,7 @@ data class Clothing(
     var name: String = "default",
     var type: ClothingType = ClothingType.NONE
     // ADD PHOTO
-)
+) {
+    val photoFileName
+        get() = "IMG_$id.jpg"
+}

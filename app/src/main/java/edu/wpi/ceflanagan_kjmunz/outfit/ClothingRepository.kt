@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import edu.wpi.ceflanagan_kjmunz.outfit.database.ClothingDatabase
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -18,6 +19,8 @@ class ClothingRepository private constructor(context: Context) {
     private val clothingDao = database.clothingDao()
 
     private val executor = Executors.newSingleThreadExecutor()
+
+    private val filesDir = context.applicationContext.filesDir
 
     fun getClothes(): LiveData<List<Clothing>> = clothingDao.getClothes()
     fun getTops(): LiveData<List<Clothing>> = clothingDao.getClothesByType(ClothingType.TOP)
@@ -42,6 +45,9 @@ class ClothingRepository private constructor(context: Context) {
             clothingDao.deleteClothing(clothing)
         }
     }
+
+    fun getPhotoFile(clothing: Clothing): File = File(filesDir, clothing.photoFileName)
+
     companion object {
         private var INSTANCE: ClothingRepository? = null
         fun initialize(context: Context) {
