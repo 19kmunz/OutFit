@@ -1,6 +1,7 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -24,7 +25,16 @@ private const val TAG = "NewOutfitFragment"
 class NewOutfitFragment : Fragment() {
     interface Callbacks {
         fun onNewOutfitSaved()
+        fun onNewOutfitRequested()
+        fun onNavSearch()
+        fun onNavCloset()
+        fun onNavOutfits()
     }
+
+
+    private lateinit var navCloset : ImageView
+    private lateinit var navSearch : ImageView
+    private lateinit var navOutfits : ImageView
 
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
@@ -78,6 +88,10 @@ class NewOutfitFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_new_outfit, container, false)
+        navCloset = view.findViewById(R.id.closet)
+        navOutfits = view.findViewById(R.id.outfits)
+        navSearch = view.findViewById(R.id.search)
+
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
         bottomsRecyclerView = view.findViewById(R.id.bottoms_list) as RecyclerView
         accsRecyclerView = view.findViewById(R.id.acc_list) as RecyclerView
@@ -89,6 +103,16 @@ class NewOutfitFragment : Fragment() {
         accsRecyclerView.adapter = accAdapter
         saveOutfit = view.findViewById(R.id.add_fit)
         outfitNameEditText = view.findViewById(R.id.outfit_name)
+
+        navCloset.setOnClickListener {
+            callbacks?.onNavCloset()
+        }
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
+        navOutfits.setOnClickListener {
+            callbacks?.onNavOutfits()
+        }
 //        updateUI()
         return view
     }

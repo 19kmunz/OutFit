@@ -1,6 +1,8 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +12,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import getScaledAndRotatedBitmap
+import java.io.File
 import java.util.*
 
 private const val TAG = "ClosetFragment"
@@ -22,9 +27,14 @@ private const val TAG = "ClosetFragment"
 class ClosetFragment : Fragment() {
     interface Callbacks {
         fun onNewClothingRequested()
+        fun onNavSearch()
+        fun onNavOutfits()
     }
 
     private var callbacks: Callbacks? = null
+
+    private lateinit var navSearch : ImageView
+    private lateinit var navOutfits : ImageView
 
     private lateinit var plusButton: FloatingActionButton
     private lateinit var topsRecyclerView: RecyclerView
@@ -57,6 +67,9 @@ class ClosetFragment : Fragment() {
     ): View? {
         Log.d(TAG, "onCreateView() called")
         val view = inflater.inflate(R.layout.fragment_closet, container, false)
+        navOutfits = view.findViewById(R.id.outfits)
+        navSearch = view.findViewById(R.id.search)
+
         plusButton = view.findViewById(R.id.add_fit)
 
         topsRecyclerView = view.findViewById(R.id.tops_list) as RecyclerView
@@ -71,6 +84,12 @@ class ClosetFragment : Fragment() {
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
 
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
+        }
+        navOutfits.setOnClickListener {
+            callbacks?.onNavOutfits()
+        }
         plusButton.setOnClickListener{
             callbacks?.onNewClothingRequested()
         }
@@ -136,6 +155,8 @@ class ClosetFragment : Fragment() {
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: Clothing
+        private lateinit var photoFile: File
+        private lateinit var photoUri: Uri
         private val nameTextView: TextView = itemView.findViewById(R.id.name)
         private val image: ImageView = itemView.findViewById(R.id.image)
         private val delete: ImageView = itemView.findViewById(R.id.delete)
@@ -150,12 +171,21 @@ class ClosetFragment : Fragment() {
             delete.setOnClickListener {
                 closetViewModel.deleteClothing(clothing)
             }
-            /* TODO: set image
-            image.setImageResource(clothingImage.get())
-            */
+            updatePhotoView()
         }
         override fun onClick(v: View) {
             //callbacks?.onScoreSelected(score.id) TODO: stretch goal to edit view
+        }
+
+        private fun updatePhotoView() {
+            photoFile = closetViewModel.getPhotoFile(clothing)
+            photoUri = FileProvider.getUriForFile(requireActivity(), "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider", photoFile)
+            if (photoFile.exists()) {
+                val bitmap = getScaledAndRotatedBitmap(photoFile.path, requireActivity())
+                image.setImageBitmap(bitmap)
+            } else {
+                image.setImageDrawable(null)
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +22,14 @@ class OutfitListFragment : Fragment() {
     interface Callbacks {
         fun onNewOutfitRequested()
     }
+    interface Callbacks {
+        fun onNavSearch()
+        fun onNavCloset()
+    }
+
+
+    private lateinit var navCloset : ImageView
+    private lateinit var navSearch : ImageView
 
     private lateinit var outfitRecyclerView: RecyclerView
     private var adapter: OutfitAdapter? = null
@@ -38,6 +48,15 @@ class OutfitListFragment : Fragment() {
         Log.d(TAG, "onAttach() called")
         super.onAttach(context)
         callbacks = context as Callbacks?
+    override fun onAttach(context: Context) {
+        Log.d(TAG, "onAttach() called")
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG, "Total outfits: ${outfitListViewModel.outfits.size}")
     }
 
     override fun onCreateView(
@@ -49,6 +68,9 @@ class OutfitListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_outfits_list, container, false)
         newButton = view.findViewById(R.id.add_fit)
 
+        navCloset = view.findViewById(R.id.closet)
+        navSearch = view.findViewById(R.id.search)
+
         outfitRecyclerView =
             view.findViewById(R.id.outfits_recycler_view) as RecyclerView
         outfitRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -57,6 +79,13 @@ class OutfitListFragment : Fragment() {
 
         newButton.setOnClickListener{
             callbacks?.onNewOutfitRequested()
+        }
+
+        navCloset.setOnClickListener {
+            callbacks?.onNavCloset()
+        }
+        navSearch.setOnClickListener {
+            callbacks?.onNavSearch()
         }
 
         return view
@@ -153,5 +182,11 @@ companion object {
     }
 
 
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
+    }
 
 }

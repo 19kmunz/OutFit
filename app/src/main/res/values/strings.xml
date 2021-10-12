@@ -20,4 +20,5 @@
     <string name="outfit_title">Outfit title</string>
     <string name="outfit_name">Oufit name</string>
     <string name="clothing_names">Top, bottom, accessory</string>
+    <string name="search_with_keywords">Search with keywords...</string>
 </resources>
