@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,10 @@ class OutfitListFragment : Fragment() {
 
     private val outfitListViewModel: OutfitListViewModel by lazy {
         ViewModelProvider(this).get(OutfitListViewModel::class.java)
+    }
+
+    private val clothingViewModel: ClothingViewModel by lazy {
+        ViewModelProvider(this).get(ClothingViewModel::class.java)
     }
 
     override fun onAttach(context: Context) {
@@ -84,16 +89,29 @@ companion object {
         : RecyclerView.ViewHolder(view) {
 
         private lateinit var outfit: Outfit
+        private val delete: ImageView = itemView.findViewById(R.id.delete)
 
         private val outfitNameTextView: TextView = itemView.findViewById(R.id.outfit_name)
 //        private val clothesNameTextView: TextView = itemView.findViewById(R.id.clothing_names)
 
         fun bind(outfit: Outfit) {
             this.outfit = outfit
+            var topText = "No top"
+            var bottomText = "No bottom"
+            var accText = "No accessories"
+//            if (this.outfit.top != null) {
+//                clothingViewModel.loadClothing(this.outfit.top!!)
+//                Log.d(TAG, "View set to" + clothingViewModel.clothingLiveData.value.toString())
+//
+//            }
             outfitNameTextView.text = outfit.name
+//            clothingViewModel.loadClothing(outfit.top!!)
             //TODO SET CLOTHES TEXT? Or get rid of this
 //                var clothes : String = outfit.top. + ", " + outfit.bottom!!.name + ", " + outfit.accessory!!.name
 //            clothesNameTextView.setText(clothes)
+            delete.setOnClickListener {
+                outfitListViewModel.deleteOutfit(outfit)
+            }
         }
     }
 
