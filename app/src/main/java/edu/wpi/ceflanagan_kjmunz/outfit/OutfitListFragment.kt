@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 private const val TAG = "OutfitListFragment"
 
 class OutfitListFragment : Fragment() {
-
     interface Callbacks {
         fun onNewOutfitRequested()
     }
@@ -68,15 +67,17 @@ companion object {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG, "onViewCreated() called")
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "observer abt to be called")
+
         outfitListViewModel.outfitLiveData.observe(
             viewLifecycleOwner,
             { outfits ->
                 outfits?.let {
                     Log.i(TAG, "Got outfits ${outfits.size}")
-                    // updateUITops
-                    adapter = OutfitAdapter(outfits)
-                    outfitRecyclerView.adapter = adapter
-                }})
+                    updateUI(outfits)
+                }
+                Log.d(TAG, "Observer called")
+            })
     }
 
     private inner class OutfitHolder(view: View)
@@ -84,15 +85,22 @@ companion object {
 
         private lateinit var outfit: Outfit
 
-        private val outfitName: TextView = itemView.findViewById(R.id.outfit_name)
-        private val clothesName: TextView = itemView.findViewById(R.id.clothing_names)
+        private val outfitNameTextView: TextView = itemView.findViewById(R.id.outfit_name)
+//        private val clothesNameTextView: TextView = itemView.findViewById(R.id.clothing_names)
 
         fun bind(outfit: Outfit) {
             this.outfit = outfit
-                outfitName.text = outfit.name
-                var clothes : String = outfit.top!!.name + ", " + outfit.bottom!!.name + ", " + outfit.accessory!!.name
-            clothesName.setText(clothes)
+            outfitNameTextView.text = outfit.name
+            //TODO SET CLOTHES TEXT? Or get rid of this
+//                var clothes : String = outfit.top. + ", " + outfit.bottom!!.name + ", " + outfit.accessory!!.name
+//            clothesNameTextView.setText(clothes)
         }
+    }
+
+    private fun updateUI(outfits: List<Outfit>) {
+        Log.d(TAG, "updateUI() called")
+        adapter = OutfitAdapter(outfits)
+        outfitRecyclerView.adapter = adapter
     }
 
     private inner class OutfitAdapter(var outfits: List<Outfit>)
@@ -103,7 +111,9 @@ companion object {
             val view = layoutInflater.inflate(R.layout.list_item_outfit, parent, false)
             return OutfitHolder(view)
         }
+
         override fun getItemCount() = outfits.size
+
         override fun onBindViewHolder(holder: OutfitHolder, position: Int) {
             val outfit = outfits[position]
             holder.bind(outfit)

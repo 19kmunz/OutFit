@@ -6,12 +6,12 @@ import java.util.*
 class OutfitTypeConverter {
     @TypeConverter
     fun toUUID(uuid: String?): UUID? {
-        return UUID.fromString(uuid)
+        return if (uuid == null) null else UUID.fromString(uuid)
     }
 
     @TypeConverter
     fun fromUUID(uuid: UUID?): String? {
-        return uuid?.toString()
+        return if (uuid == null) null else uuid?.toString()
     }
 
 

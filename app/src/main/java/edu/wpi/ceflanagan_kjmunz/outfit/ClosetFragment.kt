@@ -74,6 +74,8 @@ class ClosetFragment : Fragment() {
         plusButton.setOnClickListener{
             callbacks?.onNewClothingRequested()
         }
+
+
         //updateUI()
         return view
     }

@@ -3,27 +3,25 @@ package edu.wpi.ceflanagan_kjmunz.outfit
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
 private const val TAG = "NewOutfitFragment"
 
 class NewOutfitFragment : Fragment() {
-    interface Callbacks {
-        fun onExit()
-    }
-
-    private var callbacks: Callbacks? = null
-
 
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
@@ -34,21 +32,38 @@ class NewOutfitFragment : Fragment() {
     private var highlightedTops: LinkedList<View> = LinkedList<View>(emptyList())
     private var highlightedBottoms: LinkedList<View> = LinkedList<View>(emptyList())
     private var highlightedAccessories: LinkedList<View> = LinkedList<View>(emptyList())
+    private lateinit var outfitNameEditText: EditText
+    private var setTop: UUID? = null
+    private var setBottom: UUID? = null
+    private var setAccessory: UUID? = null
+    private lateinit var outfitName: String
+    private lateinit var outfit: Outfit
+    private lateinit var saveOutfit: FloatingActionButton
+
 
     private val closetViewModel: ClosetViewModel by lazy {
         ViewModelProvider(this).get(ClosetViewModel::class.java)
     }
 
+    private val outfitViewModel: OutfitViewModel by lazy {
+        ViewModelProvider(this).get(OutfitViewModel::class.java)
+    }
+
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach() called")
         super.onAttach(context)
-        callbacks = context as Callbacks?
     }
 
     companion object {
         fun newInstance(): NewOutfitFragment {
             return NewOutfitFragment()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        outfitName = "Sample Outfit"
+        outfit = Outfit(UUID.randomUUID(), outfitName, setTop, setBottom, setAccessory)
     }
 
     override fun onCreateView(
@@ -67,6 +82,8 @@ class NewOutfitFragment : Fragment() {
         bottomsRecyclerView.adapter = bottomAdapter
         accsRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         accsRecyclerView.adapter = accAdapter
+        saveOutfit = view.findViewById(R.id.add_fit)
+        outfitNameEditText = view.findViewById(R.id.outfit_name)
 //        updateUI()
         return view
     }
@@ -107,7 +124,16 @@ class NewOutfitFragment : Fragment() {
                 }
                 Log.d(TAG, "Accs Observer called")
             })
-    }
+
+        saveOutfit.setOnClickListener { view: View ->
+            outfit.name = outfitName
+            outfit.top = setTop
+            outfit.bottom = setBottom
+            outfit.accessory = setAccessory
+            Log.d(TAG, "Save Button clicked, inserting outfit into database")
+            outfitViewModel.addOutfit(outfit)
+            }
+        }
 
 //    private fun updateUI() {
 //        topAdapter = ClothingAdapter(tops)
@@ -128,8 +154,9 @@ class NewOutfitFragment : Fragment() {
         fun bind(clothing: Clothing) {
             this.clothing = clothing
             nameTextView.text = clothing.name;
-            Log.d(TAG, "Set to " + clothing.name)
+            Log.d(TAG, "NameTextView set to " + clothing.name)
         }
+
         override fun onClick(v: View) {
             Log.d(TAG, clothing.type.toString() + " " + clothing.name + " selected")
 
@@ -141,6 +168,7 @@ class NewOutfitFragment : Fragment() {
                     Log.d(TAG, "Unhighlighted all tops")
                 }
                 highlightedTops.add(v)
+                setTop = clothing.id
             }
             else if (clothing.type.equals(ClothingType.BOTTOM))
             {
@@ -149,14 +177,16 @@ class NewOutfitFragment : Fragment() {
                     Log.d(TAG, "Unhighlighted all bottoms")
                 }
                 highlightedBottoms.add(v)
+                setBottom = clothing.id
             }
-            else if (clothing.type.equals(ClothingType.BOTTOM))
+            else if (clothing.type.equals(ClothingType.ACCESSORY))
             {
                 for (i in 0 until highlightedAccessories.size) {
                     highlightedAccessories[i].setBackgroundColor(trans)
                     Log.d(TAG, "Unhighlighted all accessories")
                 }
                 highlightedAccessories.add(v)
+                setAccessory = clothing.id
             }
 
             val color = v.resources.getColor(R.color.app_default)
@@ -180,9 +210,23 @@ class NewOutfitFragment : Fragment() {
         }
     }
 
-    override fun onDetach() {
-        Log.d(TAG, "onDetach() called")
-        super.onDetach()
-        callbacks = null
+    override fun onStart() {
+        super.onStart()
+
+        outfitNameEditText.addTextChangedListener( object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // blank
+            }
+
+            override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
+                outfitName = outfitNameEditText.text.toString()
+                outfit.name = outfitName
+                Log.d(TAG, "Outfit name set to: " + outfitName)
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                // blank
+            }
+        })
     }
 }

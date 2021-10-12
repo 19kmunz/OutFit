@@ -18,5 +18,6 @@
     <string name="sel_bot">Select Bottom</string>
     <string name="sel_acc">Select Accessories</string>
     <string name="outfit_title">Outfit title</string>
+    <string name="outfit_name">Oufit name</string>
     <string name="clothing_names">Top, bottom, accessory</string>
 </resources>
