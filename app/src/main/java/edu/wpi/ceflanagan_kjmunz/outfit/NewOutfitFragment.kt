@@ -22,6 +22,9 @@ import java.util.*
 private const val TAG = "NewOutfitFragment"
 
 class NewOutfitFragment : Fragment() {
+    interface Callbacks {
+        fun onNewOutfitSaved()
+    }
 
     private lateinit var topsRecyclerView: RecyclerView
     private lateinit var bottomsRecyclerView: RecyclerView
@@ -33,12 +36,13 @@ class NewOutfitFragment : Fragment() {
     private var highlightedBottoms: LinkedList<View> = LinkedList<View>(emptyList())
     private var highlightedAccessories: LinkedList<View> = LinkedList<View>(emptyList())
     private lateinit var outfitNameEditText: EditText
-    private var setTop: UUID? = null
-    private var setBottom: UUID? = null
-    private var setAccessory: UUID? = null
+    private var setTop: String? = null
+    private var setBottom: String? = null
+    private var setAccessory: String? = null
     private lateinit var outfitName: String
     private lateinit var outfit: Outfit
     private lateinit var saveOutfit: FloatingActionButton
+    private var callbacks: NewOutfitFragment.Callbacks? = null
 
 
     private val closetViewModel: ClosetViewModel by lazy {
@@ -52,6 +56,7 @@ class NewOutfitFragment : Fragment() {
     override fun onAttach(context: Context) {
         Log.d(TAG, "onAttach() called")
         super.onAttach(context)
+        callbacks = context as NewOutfitFragment.Callbacks?
     }
 
     companion object {
@@ -132,7 +137,8 @@ class NewOutfitFragment : Fragment() {
             outfit.accessory = setAccessory
             Log.d(TAG, "Save Button clicked, inserting outfit into database")
             outfitViewModel.addOutfit(outfit)
-            }
+            callbacks?.onNewOutfitSaved()
+        }
         }
 
 //    private fun updateUI() {
@@ -168,7 +174,7 @@ class NewOutfitFragment : Fragment() {
                     Log.d(TAG, "Unhighlighted all tops")
                 }
                 highlightedTops.add(v)
-                setTop = clothing.id
+                setTop = clothing.name
             }
             else if (clothing.type.equals(ClothingType.BOTTOM))
             {
@@ -177,7 +183,7 @@ class NewOutfitFragment : Fragment() {
                     Log.d(TAG, "Unhighlighted all bottoms")
                 }
                 highlightedBottoms.add(v)
-                setBottom = clothing.id
+                setBottom = clothing.name
             }
             else if (clothing.type.equals(ClothingType.ACCESSORY))
             {
@@ -186,7 +192,7 @@ class NewOutfitFragment : Fragment() {
                     Log.d(TAG, "Unhighlighted all accessories")
                 }
                 highlightedAccessories.add(v)
-                setAccessory = clothing.id
+                setAccessory = clothing.name
             }
 
             val color = v.resources.getColor(R.color.app_default)
@@ -228,5 +234,11 @@ class NewOutfitFragment : Fragment() {
                 // blank
             }
         })
+    }
+
+    override fun onDetach() {
+        Log.d(TAG, "onDetach() called")
+        super.onDetach()
+        callbacks = null
     }
 }

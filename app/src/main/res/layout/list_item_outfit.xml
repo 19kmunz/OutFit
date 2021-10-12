@@ -14,9 +14,9 @@
         android:text="@string/outfit_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintBottom_toTopOf="@+id/clothing_names"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="1dp" />
 
     <TextView
         android:id="@+id/clothing_names"
@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:text="@string/clothing_names"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/outfit_name" />
 
     <ImageView
@@ -36,8 +35,6 @@
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 

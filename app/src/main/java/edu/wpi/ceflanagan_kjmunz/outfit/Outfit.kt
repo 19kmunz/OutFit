@@ -9,7 +9,8 @@ data class Outfit(
     @PrimaryKey
     val id: UUID = UUID. randomUUID(),
     var name: String = "default",
-    var top: UUID?,
-    var bottom: UUID?,
-    var accessory: UUID?
+    var top: String?,
+    var bottom: String?,
+    var accessory: String?
+    //TODO ADD IMAGES
 )

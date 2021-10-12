@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import edu.wpi.ceflanagan_kjmunz.outfit.ui.main.MainFragment
 
-class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingFragment.Callbacks, OutfitListFragment.Callbacks {
+class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingFragment.Callbacks, OutfitListFragment.Callbacks, NewOutfitFragment.Callbacks {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +27,15 @@ class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingF
 
     override fun onNewOutfitRequested() {
         val fragment = NewOutfitFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onNewOutfitSaved() {
+        val fragment = OutfitListFragment()
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.container, fragment)

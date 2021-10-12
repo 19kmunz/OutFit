@@ -12,7 +12,8 @@
         android:id="@+id/tops_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/outfit_name"
+        android:layout_alignParentTop="false"
         android:text="@string/sel_top"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
@@ -53,13 +54,14 @@
         android:layout_below="@+id/acc_title"
         android:orientation="horizontal" />
 
-    <include android:id="@+id/layout_banner" layout="@layout/navigation_bar" />
+    <include
+        android:id="@+id/layout_banner"
+        layout="@layout/navigation_bar" />
 
     <EditText
         android:id="@+id/outfit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/acc_list"
         android:editable="true"
         android:ems="10"
         android:inputType="textPersonName"

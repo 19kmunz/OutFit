@@ -83,6 +83,7 @@ companion object {
                 }
                 Log.d(TAG, "Observer called")
             })
+
     }
 
     private inner class OutfitHolder(view: View)
@@ -92,23 +93,30 @@ companion object {
         private val delete: ImageView = itemView.findViewById(R.id.delete)
 
         private val outfitNameTextView: TextView = itemView.findViewById(R.id.outfit_name)
-//        private val clothesNameTextView: TextView = itemView.findViewById(R.id.clothing_names)
+        private val clothesNameTextView: TextView = itemView.findViewById(R.id.clothing_names)
 
         fun bind(outfit: Outfit) {
             this.outfit = outfit
+
             var topText = "No top"
             var bottomText = "No bottom"
             var accText = "No accessories"
-//            if (this.outfit.top != null) {
-//                clothingViewModel.loadClothing(this.outfit.top!!)
-//                Log.d(TAG, "View set to" + clothingViewModel.clothingLiveData.value.toString())
-//
-//            }
+
+
             outfitNameTextView.text = outfit.name
-//            clothingViewModel.loadClothing(outfit.top!!)
-            //TODO SET CLOTHES TEXT? Or get rid of this
-//                var clothes : String = outfit.top. + ", " + outfit.bottom!!.name + ", " + outfit.accessory!!.name
-//            clothesNameTextView.setText(clothes)
+            if (outfit.top != null) {
+            topText = outfit.top!!
+            }
+            if (outfit.bottom != null) {
+                bottomText = outfit.bottom!!
+            }
+            if (outfit.accessory != null) {
+                accText = outfit.accessory!!
+            }
+
+            var clothes : String = topText + ", " + bottomText + ", " + accText
+            Log.d(TAG, "Clothes name set to " + clothes)
+            clothesNameTextView.setText(clothes)
             delete.setOnClickListener {
                 outfitListViewModel.deleteOutfit(outfit)
             }
