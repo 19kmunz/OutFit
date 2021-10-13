@@ -36,13 +36,64 @@ class OutfitApplicationTest {
         closetViewModel = ClosetViewModel()
         clothingViewModel = ClothingViewModel()
 
-        outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", "test bottom", "test accessory", "IMG_outfiticon.png", "IMG_shirtlogo.png", "IMG_magnifyingglass.png")
         top = Clothing(UUID.randomUUID(), "test top", ClothingType.TOP)
         bottom = Clothing(UUID.randomUUID(), "test bottom", ClothingType.BOTTOM)
-        accessory  = Clothing(UUID.randomUUID(), "test accessory", ClothingType.ACCESSORY)
+        accessory = Clothing(UUID.randomUUID(), "test accessory", ClothingType.ACCESSORY)
+        outfit = Outfit(UUID.randomUUID(), "test outfit", "test", "test", "test", null, null, null)
+
+
         clothingApplication = ClothingApplication()
         clothingApplication.onCreate()
+    }
 
+    fun validOutfit(outfit: Outfit) : Boolean {
+        if (outfit == null ) {
+            return false
+        }
+        return true
+    }
+
+    fun validClothing(clothing: Clothing) : Boolean {
+        if (clothing == null ) {
+            return false
+        }
+        return true
+    }
+
+    @Test
+    fun validClothingNoImageTest() {
+        bottom = Clothing(UUID.randomUUID(), "test bottom 2", ClothingType.BOTTOM)
+        assertTrue(validClothing(bottom))
+    }
+
+    @Test
+    fun validOutfitFromClothesTest() {
+        outfit = Outfit(UUID.randomUUID(), "Test Outfit 2", top.name, bottom.name, accessory.name, top.photoFileName, bottom.photoFileName, accessory.photoFileName)
+        assertTrue(validOutfit(outfit))
+    }
+
+    @Test
+    fun validOutfitTopBottomAccTest() {
+        outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", "test bottom", "test accessory", null, null, null)
+        assertTrue(validOutfit(outfit))
+    }
+
+    @Test
+    fun validOutfitTopBottomNoAccTest() {
+        outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", "test bottom", null, null, null, null)
+        assertTrue(validOutfit(outfit))
+    }
+
+    @Test
+    fun validOutfitTopNoBottomAccTest() {
+        outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", null, "test accessory", null, null, null)
+        assertTrue(validOutfit(outfit))
+    }
+
+    @Test
+    fun validOutfitTopNoBottomNoAccTest() {
+        outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", null, null, null, null, null)
+        assertTrue(validOutfit(outfit))
     }
 
     @Test
