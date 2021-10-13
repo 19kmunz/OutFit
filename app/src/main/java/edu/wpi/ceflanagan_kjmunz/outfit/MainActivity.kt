@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity(), ClosetFragment.Callbacks, NewClothingF
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, SearchFragment())
+                .replace(R.id.container, ClosetFragment())
                 .commitNow()
         }
     }
