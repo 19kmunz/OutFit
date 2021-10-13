@@ -38,7 +38,7 @@ class OutfitApplicationTest {
 
         outfit = Outfit(UUID.randomUUID(), "test outfit", "test top", "test bottom", "test accessory", "IMG_outfiticon.png", "IMG_shirtlogo.png", "IMG_magnifyingglass.png")
         top = Clothing(UUID.randomUUID(), "test top", ClothingType.TOP)
-        bottom = Clothing(UUID.randomUUID(), "test bottom", ClothingType.ACCESSORY)
+        bottom = Clothing(UUID.randomUUID(), "test bottom", ClothingType.BOTTOM)
         accessory  = Clothing(UUID.randomUUID(), "test accessory", ClothingType.ACCESSORY)
         clothingApplication = ClothingApplication()
         clothingApplication.onCreate()
