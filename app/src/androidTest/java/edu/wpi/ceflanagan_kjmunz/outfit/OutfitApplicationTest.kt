@@ -96,11 +96,14 @@ class OutfitApplicationTest {
         assertTrue(validOutfit(outfit))
     }
 
+    /*
     @Test
     fun useAppContext() {
         // Context of the app under test.
         Assert.assertEquals("edu.wpi.ceflanagan_kjmunz.outfit", appContext.packageName)
     }
+
+     */
 
     /* Cannot invoke setValue on a background thread
     @Test
