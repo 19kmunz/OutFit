@@ -167,7 +167,7 @@ class ClosetFragment : Fragment() {
         fun bind(clothing: Clothing) {
             this.clothing = clothing
             nameTextView.text = clothing.name;
-            Log.d(TAG, "Set to " + clothing.name)
+            Log.d(TAG, "Set " + clothing.type +" to " + clothing.id)
             delete.setOnClickListener {
                 closetViewModel.deleteClothing(clothing)
             }
