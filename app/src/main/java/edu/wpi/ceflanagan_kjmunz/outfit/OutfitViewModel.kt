@@ -16,7 +16,7 @@ class OutfitViewModel : ViewModel() {
         }
 
     fun loadOutfit(outfitID: UUID) {
-        outfitIdLiveData.value = outfitID
+        outfitIdLiveData.postValue(outfitID)
     }
 
     fun addOutfit(outfit: Outfit) {
@@ -26,4 +26,5 @@ class OutfitViewModel : ViewModel() {
     fun saveOutfit(outfit: Outfit) {
         outfitRepository.updateOutfit(outfit)
     }
+
 }

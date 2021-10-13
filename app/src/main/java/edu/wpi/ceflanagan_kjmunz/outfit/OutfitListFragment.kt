@@ -163,49 +163,64 @@ companion object {
 
 
         private fun updateTopPhotoView() {
-            photoTopFile = outfitListViewModel.getTopPhotoFile(outfit)
-            photoTopUri = FileProvider.getUriForFile(
-                requireActivity(),
-                "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
-                photoTopFile
-            )
-            if (photoTopFile.exists()) {
-                val bitmap = getScaledAndRotatedBitmap(photoTopFile.path, requireActivity())
-                imageTop.setImageBitmap(bitmap)
-            } else {
+            try {
+                photoTopFile = outfitListViewModel.getTopPhotoFile(outfit)
+                photoTopUri = FileProvider.getUriForFile(
+                    requireActivity(),
+                    "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
+                    photoTopFile
+                )
+                if (photoTopFile.exists()) {
+                    val bitmap = getScaledAndRotatedBitmap(photoTopFile.path, requireActivity())
+                    imageTop.setImageBitmap(bitmap)
+                } else {
+                    imageTop.setImageDrawable(null)
+                }
+            } catch (e: Exception) {
                 imageTop.setImageDrawable(null)
             }
         }
 
         private fun updateBottomPhotoView() {
-            photoBottomFile = outfitListViewModel.getBottomPhotoFile(outfit)
-            photoBottomUri = FileProvider.getUriForFile(
-                requireActivity(),
-                "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
-                photoBottomFile
-            )
-            if (photoBottomFile.exists()) {
-                val bitmap = getScaledAndRotatedBitmap(photoBottomFile.path, requireActivity())
-                imageBottom.setImageBitmap(bitmap)
-            } else {
+            try {
+
+                photoBottomFile = outfitListViewModel.getBottomPhotoFile(outfit)
+                photoBottomUri = FileProvider.getUriForFile(
+                    requireActivity(),
+                    "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
+                    photoBottomFile
+                )
+                if (photoBottomFile.exists()) {
+                    val bitmap = getScaledAndRotatedBitmap(photoBottomFile.path, requireActivity())
+                    imageBottom.setImageBitmap(bitmap)
+                } else {
+                    imageBottom.setImageDrawable(null)
+                }
+            } catch (e: Exception) {
                 imageBottom.setImageDrawable(null)
             }
         }
 
         private fun updateAccessoryPhotoView() {
-            photoAccessoryFile = outfitListViewModel.getAccessoryPhotoFile(outfit)
-            photoAccessoryUri = FileProvider.getUriForFile(
-                requireActivity(),
-                "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
-                photoAccessoryFile
-            )
-            if (photoAccessoryFile.exists()) {
-                val bitmap = getScaledAndRotatedBitmap(photoAccessoryFile.path, requireActivity())
-                imageAccessory.setImageBitmap(bitmap)
-            } else {
+            try {
+                photoAccessoryFile = outfitListViewModel.getAccessoryPhotoFile(outfit)
+                photoAccessoryUri = FileProvider.getUriForFile(
+                    requireActivity(),
+                    "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider",
+                    photoAccessoryFile
+                )
+                if (photoAccessoryFile.exists()) {
+                    val bitmap =
+                        getScaledAndRotatedBitmap(photoAccessoryFile.path, requireActivity())
+                    imageAccessory.setImageBitmap(bitmap)
+                } else {
+                    imageAccessory.setImageDrawable(null)
+                }
+            } catch (e: Exception) {
                 imageAccessory.setImageDrawable(null)
             }
         }
+
     }
 
     private fun updateUI(outfits: List<Outfit>) {
