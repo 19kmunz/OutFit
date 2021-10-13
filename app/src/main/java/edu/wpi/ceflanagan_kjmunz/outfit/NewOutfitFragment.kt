@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import getScaledAndRotatedBitmap
 import java.io.File
+import java.lang.Exception
 import java.util.*
 
 private const val TAG = "NewOutfitFragment"
@@ -203,6 +204,7 @@ class NewOutfitFragment : Fragment() {
         }
 
             private fun updatePhotoView() {
+                try {
                 photoFile = closetViewModel.getPhotoFile(clothing)
                 photoUri = FileProvider.getUriForFile(requireActivity(), "edu.wpi.ceflanagan_kjmunz.outfit.fileprovider", photoFile)
                 if (photoFile.exists()) {
@@ -212,6 +214,9 @@ class NewOutfitFragment : Fragment() {
                     image.setImageDrawable(null)
                 }
             }
+                catch (e : Exception) {
+                    image.setImageDrawable(null)
+                }}
 
         override fun onClick(v: View) {
             Log.d(TAG, clothing.type.toString() + " " + clothing.name + " selected")
