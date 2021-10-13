@@ -1,10 +1,15 @@
 package edu.wpi.ceflanagan_kjmunz.outfit.api
 
-import com.google.gson.annotations.SerializedName
+import edu.wpi.ceflanagan_kjmunz.outfit.Clothing
 import edu.wpi.ceflanagan_kjmunz.outfit.ClothingType
+import java.util.*
 
 class KohlsClothing (
     var name: String = "",
     var imageLink: String = "",
-    var type: ClothingType = ClothingType.NONE
-)
+    var type: ClothingType = ClothingType.ACCESSORY
+) {
+    fun toClothing() : Clothing {
+        return Clothing(UUID.randomUUID(), name, type)
+    }
+}

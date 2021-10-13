@@ -1,6 +1,8 @@
 package edu.wpi.ceflanagan_kjmunz.outfit
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,7 +20,9 @@ import edu.wpi.ceflanagan_kjmunz.outfit.api.KohlsClothing
 import org.json.JSONObject
 import java.util.*
 import android.graphics.drawable.Drawable
-import java.io.InputStream
+import android.net.Uri
+import androidx.core.content.FileProvider
+import java.io.*
 import java.net.URL
 import java.util.concurrent.Executors
 
@@ -44,6 +48,8 @@ class SearchFragment : Fragment() {
 
     private lateinit var TypeSpinner: Spinner
     private lateinit var KeywordsInput: EditText
+
+    private val clothingRepository = ClothingRepository.get()
 
     private val kohlsViewModel: KohlsViewModel by lazy {
         ViewModelProvider(this).get(KohlsViewModel::class.java)
@@ -150,19 +156,7 @@ class SearchFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        KeywordsInput.addTextChangedListener( object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                // blank
-            }
-
-            override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
-                kohlsViewModel.loadClothes(KeywordsInput.text.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                // blank
-            }
-        })
+        KeywordsInput.setOnFocusChangeListener { view,b -> kohlsViewModel.loadClothes(KeywordsInput.text.toString()) }
     }
 
     override fun onDetach() {
@@ -173,6 +167,7 @@ class SearchFragment : Fragment() {
 
     private inner class ClothingHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var clothing: KohlsClothing
+        private lateinit var drawable: Drawable
         private val nameTextView: TextView = itemView.findViewById(R.id.name)
         private val image: ImageView = itemView.findViewById(R.id.image)
         private val add: ImageView = itemView.findViewById(R.id.add)
@@ -187,16 +182,33 @@ class SearchFragment : Fragment() {
             Log.d(TAG, "Set to " + clothing.name)
             executor.execute {
                 val inputStream: InputStream = URL(clothing.imageLink).getContent() as InputStream
-                val drawable = Drawable.createFromStream(inputStream, "src name")
+                drawable = Drawable.createFromStream(inputStream, "src name")
                 activity?.runOnUiThread(java.lang.Runnable {
                     image.setImageDrawable(drawable)
                 })
             }
-            /*
             add.setOnClickListener {
-                clothingRepository.addClothing(clothing)
-                callback?.onAddClothing() // return to closet
-            }*/
+                Log.d(TAG, "Adding " + clothing.name + " to closet");
+                val newCloth : Clothing = clothing.toClothing()
+                val photoFile : File = clothingRepository.getPhotoFile(newCloth)
+                // Get the bitmap from drawable object
+                val bitmap = (drawable as BitmapDrawable).bitmap
+                try {
+                    // Get the file output stream
+                    val stream: OutputStream = FileOutputStream(photoFile)
+                    // Compress bitmap
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    // Flush the stream
+                    stream.flush()
+                    // Close stream
+                    stream.close()
+                } catch (e: IOException){ // Catch the exception
+                    e.printStackTrace()
+                }
+                Log.d(TAG,"URI: " + Uri.parse(photoFile.absolutePath))
+                Toast.makeText(activity, "Added To Closet: " + newCloth.name, Toast.LENGTH_SHORT).show()
+                clothingRepository.addClothing(newCloth)
+            }
         }
         override fun onClick(v: View) {
             //callbacks?.onScoreSelected(score.id) TODO: stretch goal to edit view
